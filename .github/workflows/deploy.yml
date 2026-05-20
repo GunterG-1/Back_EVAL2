@@ -26,13 +26,13 @@ jobs:
       uses: appleboy/ssh-action@v1.0.3
       with:
           
-          host: ${{ secrets.EC2_HOST}}            
-          username: ${{ secrets.EC2_NAME}} 
+          host: ${{ secrets.EC2_HOST }}            
+          username: ${{ secrets.EC2_NAME }} 
           key: ${{ secrets.EC2_KEY_PEM }}
           
          
           proxy_host: ${{ secrets.EC2_FRONT_PUBLIC }} 
-          proxy_username: ${{ secrets.EC2_FRONT_USER}} 
+          proxy_username: ${{ secrets.EC2_FRONT_USER }} 
           proxy_key: ${{ secrets.EC2_FRONT_KEY }}       
           
           script: |
