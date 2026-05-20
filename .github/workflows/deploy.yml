@@ -77,3 +77,26 @@ jobs:
               --env-file /home/ec2-user/.env \
               --name backend \
               ${{ secrets.DOCKERHUB_NAME }}/back_eval2:latest
+
+    - name: Transfer .env file to Backend via Bastion
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+          host: ${{ secrets.EC2_FRONT_PUBLIC }}
+          username: ${{ secrets.EC2_FRONT_USER }}
+          key: ${{ secrets.EC2_FRONT_KEY }}
+          script: |
+            # Crear archivo .env en el Bastión temporalmente
+            cat > /tmp/backend.env << 'EOF'
+            PORT=3000
+            DB_HOST=10.0.141.40
+            DB_USER=root
+            DB_PASSWORD=Root1234
+            DB_NAME=proyecto_db
+            DB_PORT=3306
+            EOF
+            
+            # Transferir el .env al Backend
+            echo "${{ secrets.EC2_KEY_PEM }}" > /tmp/backend_key.pem
+            chmod 400 /tmp/backend_key.pem
+            scp -i /tmp/backend_key.pem -o StrictHostKeyChecking=no /tmp/backend.env ${{ secrets.EC2_NAME }}@${{ secrets.EC2_HOST }}:/home/ec2-user/.env
+            rm -f /tmp/backend_key.pem /tmp/backend.env
