@@ -1,0 +1,48 @@
+name: Deploy Backend a AWS EC2
+
+on:
+  push:
+    branches:
+    - deploy
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Login to DockerHub
+      run: docker login -u "${{ secrets.DOCKERHUB_NAME }}" -p "${{ secrets.ACCESO_DOCKERHUB }}"
+
+    - name: Build Docker image
+      run: docker build -t ${{ secrets.DOCKERHUB_NAME }}/back_eval2:latest .
+
+    - name: Push Docker image
+      run: docker push ${{ secrets.DOCKERHUB_NAME }}/back_eval2:latest
+
+    - name: Deploy to Backend via Bastion (Front)
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+          
+          host: ${{ secrets.EC2_HOST}}            
+          username: ${{ secrets.EC2_NAME}} 
+          key: ${{ secrets.EC2_KEY_PEM }}
+          
+         
+          proxy_host: ${{ secrets.EC2_FRONT_PUBLIC }} 
+          proxy_username: ${{ secrets.EC2_FRONT_USER}} 
+          proxy_key: ${{ secrets.EC2_FRONT_KEY }}       
+          
+          script: |
+            
+            # Comandos de Docker
+            sudo docker pull ${{ secrets.DOCKERHUB_NAME }}/back_eval2:latest
+            sudo docker stop backend || true
+            sudo docker rm backend || true
+            sudo docker run -d \
+              -p 3000:3000 \
+              --env-file /home/ec2-user/.env \
+              --name backend \
+              ${{ secrets.DOCKERHUB_NAME }}/back_eval2:latest

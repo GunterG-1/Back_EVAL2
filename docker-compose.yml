@@ -1,0 +1,9 @@
+services:
+  backend:
+    build: .
+    container_name: back_eval2
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    restart: always
