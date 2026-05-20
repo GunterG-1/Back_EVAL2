@@ -22,6 +22,25 @@ jobs:
     - name: Push Docker image
       run: docker push ${{ secrets.DOCKERHUB_NAME }}/back_eval2:latest
 
+    - name: Install Docker on Backend
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+          host: ${{ secrets.EC2_HOST }}            
+          username: ${{ secrets.EC2_NAME }} 
+          key: ${{ secrets.EC2_KEY_PEM }}
+          
+         
+          proxy_host: ${{ secrets.EC2_FRONT_PUBLIC }} 
+          proxy_username: ${{ secrets.EC2_FRONT_USER }} 
+          proxy_key: ${{ secrets.EC2_FRONT_KEY }}       
+          
+          script: |
+            sudo yum update -y
+            sudo yum install docker -y
+            sudo systemctl start docker
+            sudo systemctl enable docker
+            sudo usermod -aG docker ec2-user
+
     - name: Deploy to Backend via Bastion (Front)
       uses: appleboy/ssh-action@v1.0.3
       with:
