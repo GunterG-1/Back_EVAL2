@@ -3,7 +3,6 @@
 API REST desarrollada con Node.js + Express para el proyecto de InnovatechChile. Gestiona usuarios y conecta con la base de datos MySQL.
 
 ## 📋 Requisitos Previos
-
 - Docker y Docker Compose
 - Node.js 18+ (para desarrollo local)
 - MySQL 8.0+
