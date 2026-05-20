@@ -20,7 +20,6 @@ const dbConnection = mysql.createConnection({
     database: process.env.DB_NAME || 'proyecto_db',
     port: process.env.DB_PORT || 3306
 });
-
 // Conectar a la base de datos
 dbConnection.connect((err) => {
     if (err) {
