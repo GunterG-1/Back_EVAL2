@@ -52,12 +52,12 @@ jobs:
     - name: Deploy to Backend via Bastion Proxy
       uses: appleboy/ssh-action@v1.0.3
       with:
-          # --- DESTINO FINAL (BACKEND) ---
+          
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_NAME }}
           key: ${{ secrets.EC2_KEY_PEM }}
           
-          # --- CONFIGURACIÓN DEL BASTIÓN (FRONTEND) ---
+          
           proxy_host: ${{ secrets.EC2_FRONT_PUBLIC }}
           proxy_username: ${{ secrets.EC2_FRONT_USER }}
           proxy_key: ${{ secrets.EC2_FRONT_KEY }}
