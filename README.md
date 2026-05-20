@@ -16,7 +16,6 @@ cd ..
 docker-compose up --build
 ```
 El API estará disponible en: `http://localhost:3000`
-
 ### Opción 2: Desarrollo Local
 ```bash
 # Instalar dependencias
