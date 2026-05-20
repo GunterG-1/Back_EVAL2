@@ -49,7 +49,13 @@ app.get('/api/usuarios', (req, res) => {
             return;
         }
         res.json(results);
-    });
+    res.json(results.map(user => ({
+
+  ...user,
+
+  nombre: user.nombre ? user.nombre.slice(0, 5) : ''
+
+})));});
 });
 
 // POST - Crear un nuevo usuario

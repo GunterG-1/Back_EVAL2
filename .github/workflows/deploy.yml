@@ -61,7 +61,7 @@ jobs:
             PORT=3000
             DB_HOST=10.0.141.40
             DB_USER=root
-            DB_PASSWORD=root
+            DB_PASSWORD=Root1234
             DB_NAME=proyecto_db
             DB_PORT=3306
             EOF
